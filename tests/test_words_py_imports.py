@@ -1,10 +1,12 @@
 import pytest
 from wordle_solver.words import *
 
+
 def test_words_loads_wordlist():
 
     result = load_words()
-    assert result 
+    assert result
+
 
 def test_load_words_word_length_works():
 
@@ -14,10 +16,12 @@ def test_load_words_word_length_works():
     assert len(word5) == 5
     assert len(word6) == 6
 
+
 def test_load_words_returns_none():
     result = load_words(letter_count=256)
 
     assert result is None
+
 
 def test_random_word_returns_word():
 
@@ -27,15 +31,17 @@ def test_random_word_returns_word():
     assert test_word.isalpha()
     assert len(test_word) == 5
 
+
 def test_frequency_table_build():
 
     word_list = load_words()
     frequency_table = build_letter_frequency_table(word_list)
 
-    assert frequency_table 
+    assert frequency_table
     assert len(frequency_table.keys()) == 26
 
     # print(frequency_table.total())
+
 
 def test_fscore_returns_correct_value():
     word_list = ["AAAAA", "BBBCC"]
@@ -44,19 +50,22 @@ def test_fscore_returns_correct_value():
     assert frequency_table["A"] == 5
     assert frequency_table["B"] == 3
 
+
 def test_word_fscore_returns_correct_value():
     word_list = ["AAAAA", "BBBCC"]
     frequency_table = build_letter_frequency_table(word_list)
 
     fscore = word_fscore("AABBB", frequency_table)
 
-    assert fscore == 19 
+    assert fscore == 19
+
 
 def test_word_uscore_returns_correct_value():
 
     assert word_uscore("A") == 1
     assert word_uscore("AB") == 2
     assert word_uscore("ABCDE") == 5
+
 
 def test_starter_word_score_returns_correct_value():
     word_list = ["A", "AB", "ABCDE", "AAAAA"]
@@ -65,8 +74,7 @@ def test_starter_word_score_returns_correct_value():
 
     print(sorted_words)
 
-    assert sorted_words == ['ABCDE', 'AB', 'AAAAA', 'A']
-
+    assert sorted_words == ["ABCDE", "AB", "AAAAA", "A"]
 
 
 def test_filter_list_by_excudes():
@@ -76,10 +84,12 @@ def test_filter_list_by_excudes():
 
     assert filtered == ["A", "AAAAA"]
 
+
 def test_word_matched_mask():
 
     assert word_matches_mask("AAAAA", "A----")
     assert not word_matches_mask("AAAAA", "-B---")
+
 
 def test_filter_by_mask():
     word_list = ["ABCDE", "BBBBB", "AAAAA"]
@@ -95,18 +105,20 @@ def test_build_mask_by_matching():
 
     assert build_mask_by_matching(word_list[0], word_list[1]) == "-B---"
 
+
 def test_build_mask_by_weak_match():
     result = build_mask_by_weak_match("ABCDE", "EXXXX")
-    
-    assert  result == "----E"
+
+    assert result == "----E"
+
 
 def test_filter_chain():
     wl = load_words()
     ft = build_letter_frequency_table(wl)
     sorted_words = sort_by_starter_score(wl, ft)
-    #pprint(sorted_words[0:10])
+    # pprint(sorted_words[0:10])
     filtered = filter_for_mask(sorted_words, "A-----")
-    #pprint(filtered[0:10])
+    # pprint(filtered[0:10])
     target = "PUIST"
     # print("Target: ", target)
     g, y, b = score_words_masks("RAISE", target)
@@ -114,10 +126,10 @@ def test_filter_chain():
 
     assert g == "--IS-"
     assert y == "-----"
-    assert b == {'R', 'E', 'A'}
+    assert b == {"R", "E", "A"}
 
     list2 = filter_down(wl, g, y, b)
-    #print(list2[:10])
+    # print(list2[:10])
     assert target in list2
     sorted_words = sort_by_starter_score(list2, ft)
     print(sorted_words)
@@ -132,17 +144,18 @@ def test_filter_chain():
     list4 = filter_down(list3, g, y, b)
     print(sort_by_starter_score(list4, ft))
 
+
 def test_filter_chain2():
     wl = load_words()
     ft = build_letter_frequency_table(wl)
     sorted_words = sort_by_starter_score(wl, ft)
-    #pprint(sorted_words[0:10])
+    # pprint(sorted_words[0:10])
     target = "PUIST"
     # print("Target: ", target)
     g, y, b = score_words_masks("MOUND", target)
     assert g == "-----"
     assert y == "--U--"
-    assert b == {'M', 'O', 'D', 'N'}
+    assert b == {"M", "O", "D", "N"}
     print(g, y, b)
     list2 = sort_by_starter_score(filter_down(wl, g, y, b), ft)
     print(len(list2))
@@ -165,42 +178,4 @@ def test_filter_chain2():
     print(len(list3))
     print(list3[:10])
 
-
-
-
-
-
-
-    assert True 
-
-
-
-
-
-
-    
-
-    
-
     assert True
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
