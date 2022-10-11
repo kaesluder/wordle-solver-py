@@ -79,6 +79,11 @@ def filter_list_by_excludes(word_list, exclude_set):
     filtered = [word for word in word_list if not exclude_set.intersection(set(list(word)))]
     return filtered 
 
+def filter_list_by_includes(word_list, include_set):
+    # filter for words containing yellow characters
+
+    filtered = [word for word in word_list if include_set.issubset(set(list(word)))]
+    return filtered 
 
 def word_matches_mask(word, mask):
     
@@ -98,6 +103,8 @@ def filter_against_mask(word_list, mask):
 
     filtered = [w for w in word_list if not word_matches_mask(w, mask)]
     return filtered 
+
+
 
 
 def build_mask_by_matching(word1, word2):
@@ -165,6 +172,9 @@ def best_match(word, word_list, prior_list):
 def mask_score(mask):
     return len([a for a in mask if a.isalpha()])
 
+def mask_to_set(mask):
+    return set([a for a in mask if a.isalpha()])
+
 
 def filter_down(word_list, green_mask, yellow_mask, black_list):
     new_list = list(word_list)
@@ -172,6 +182,8 @@ def filter_down(word_list, green_mask, yellow_mask, black_list):
         new_list = filter_for_mask(new_list, green_mask)
     if mask_score(yellow_mask):
         new_list = filter_against_mask(new_list, yellow_mask)
+        new_list = filter_list_by_includes(new_list, mask_to_set(yellow_mask))
+    
     if len(black_list) > 0:
         new_list = filter_list_by_excludes(new_list, black_list)
 

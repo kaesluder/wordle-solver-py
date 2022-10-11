@@ -132,6 +132,47 @@ def test_filter_chain():
     list4 = filter_down(list3, g, y, b)
     print(sort_by_starter_score(list4, ft))
 
+def test_filter_chain2():
+    wl = load_words()
+    ft = build_letter_frequency_table(wl)
+    sorted_words = sort_by_starter_score(wl, ft)
+    #pprint(sorted_words[0:10])
+    target = "PUIST"
+    # print("Target: ", target)
+    g, y, b = score_words_masks("MOUND", target)
+    assert g == "-----"
+    assert y == "--U--"
+    assert b == {'M', 'O', 'D', 'N'}
+    print(g, y, b)
+    list2 = sort_by_starter_score(filter_down(wl, g, y, b), ft)
+    print(len(list2))
+    print(list2[:10])
+    g, y, b = score_words_masks("SERAU", target)
+    print(g, y, b)
+    list3 = sort_by_starter_score(filter_down(list2, g, y, b), ft)
+    print(len(list3))
+    print(list3[:10])
+
+    g, y, b = score_words_masks("LITUS", target)
+    print(g, y, b)
+    list3 = sort_by_starter_score(filter_down(list3, g, y, b), ft)
+    print(len(list3))
+    print(list3[:10])
+
+    g, y, b = score_words_masks("SUITY", target)
+    print(g, y, b)
+    list3 = sort_by_starter_score(filter_down(list3, g, y, b), ft)
+    print(len(list3))
+    print(list3[:10])
+
+
+
+
+
+
+
+    assert True 
+
 
 
 
